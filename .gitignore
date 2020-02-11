@@ -1,6 +1,5 @@
 node_modules/
 dist/
 .cache/
-src/server/data/
 server/
 yarn-error.log
