@@ -1,0 +1,64 @@
+{
+  "name": "crowdata",
+  "version": "1.0.0",
+  "description": "Crowdfunding for data scientists",
+  "author": "Arjun Barrett",
+  "license": "MIT",
+  "scripts": {
+    "start": "ts-node src/server/dev",
+    "lint": "eslint --fix \"src/**/*.ts{,x}\"",
+    "build": "yarn build/client && yarn build/server",
+    "build/server": "parcel build src/server/index.ts -d server -t node",
+    "build/client": "parcel build src/index.html --experimental-scope-hoisting --public-url ./"
+  },
+  "devDependencies": {
+    "@types/dom-mediacapture-record": "^1.0.3",
+    "@types/express": "^4.17.2",
+    "@types/fluent-ffmpeg": "^2.1.14",
+    "@types/multer": "^1.4.2",
+    "@types/nanoid": "^2.1.0",
+    "@types/node": "^13.7.0",
+    "@types/parcel-bundler": "^1.12.1",
+    "@types/react": "^16.9.19",
+    "@types/react-dom": "^16.9.5",
+    "@typescript-eslint/eslint-plugin": "^2.19.0",
+    "@typescript-eslint/parser": "^2.19.0",
+    "eslint": "^6.8.0",
+    "eslint-config-prettier": "^6.10.0",
+    "eslint-plugin-prettier": "^3.1.2",
+    "fluent-ffmpeg": "^2.1.2",
+    "parcel-bundler": "^1.12.4",
+    "parcel-plugin-precache-manifest": "^3.0.1",
+    "parcel-plugin-pwa-manifest": "^2.9.1",
+    "prettier": "^1.19.1",
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0",
+    "ts-node": "^8.6.2",
+    "typescript": "^3.7.5"
+  },
+  "dependencies": {
+    "express": "^4.17.1",
+    "multer": "^1.4.2",
+    "nanoid": "^2.1.11",
+    "node-wav": "^0.0.2",
+    "preact": "^10.3.1",
+    "ts-ebml": "^2.0.2"
+  },
+  "pwaManifest": {
+    "name": "Crowdata",
+    "description": "Contribute to cutting-edge scientific research without spending a dime.",
+    "iconGenerationOptions": {
+      "baseIcon": "src/icon.svg",
+      "sizes": [],
+      "genFavicons": true
+    }
+  },
+  "precacheManifest": {
+    "inject": true
+  },
+  "alias": {
+    "react": "preact/compat",
+    "react-dom": "preact/compat",
+    "react-dom/test-utils": "preact/test-utils"
+  }
+}
