@@ -1,7 +1,7 @@
 import React from 'react';
 import { render } from 'react-dom';
 import App from './App';
-import MediaRecorderPolyfill from 'audio-recorder-polyfill';
+import MediaRecorderPolyfill = require('audio-recorder-polyfill');
 
 if (!window.MediaRecorder)
   window.MediaRecorder = MediaRecorderPolyfill;
