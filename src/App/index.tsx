@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import recorder, { isSupported } from '../util/recordAudio';
 import { useSex, useID, useCompleted } from '../util/globalState';
-import configs, { sourceConfigs, infoPhrase } from './configs';
+import configs, { sourceConfigs, infoPhrase,desiredRatio } from './configs';
 import './index.css';
 
 const upload = (data: Blob, params: { [k: string]: string }): Promise<Response> => {
@@ -45,8 +45,15 @@ const App: React.FC = () => {
         .then(setID);
   }, [sex]);
   useEffect(() => {
-    if (possibleConfigs.length === 0) setCompleted([]);
-    else setDesiredConfig(chooseRandom(possibleConfigs));
+    if (possibleConfigs.length === 0) {
+      alert(`You've finished all ${completed.length} of the recording samples. Thank you so much! (If you'd like you can do some more, and you'll help our research even more!)`);
+      setCompleted([]);
+    }
+    else {
+      if (completed.length === Math.floor(configs.length * desiredRatio))
+        alert(`You've finished ${completed.length} recording samples. Thank you for your contributions! If you'd like to help even more, do ${possibleConfigs.length} more!`)
+      setDesiredConfig(chooseRandom(possibleConfigs));
+    }
   }, [completed]);
   return (
     <>
@@ -59,6 +66,7 @@ const App: React.FC = () => {
         </>
       ) : isSupported ? (
         <>
+          {completed.length + 1} of {configs.length}
           {desiredConfig.map((v, i) => <div><span>{sourceConfigs[i][0] + ': '}</span><span style={{ fontWeight: 'bold' }}>{sourceConfigs[i][1][v]}</span></div>)}
           {lastRecordedSample ? (
             <>
@@ -68,6 +76,7 @@ const App: React.FC = () => {
                   setLastRecordedSample(null);
                   setCompleted(completed.concat([desiredConfig]));
                 }}
+                style={{ color: 'green' }}
               >
                 Upload
               </button>
@@ -79,12 +88,17 @@ const App: React.FC = () => {
               >
                 Play recorded sample
               </button>
-              <button onClick={(): void => setLastRecordedSample(null)}>Retry</button>
+              <button onClick={(): void => setLastRecordedSample(null)} style={{ color: 'red' }}>Re-record</button>
             </>
           ) : (
-            <button onClick={(): void => setIsRecording(!isRecording)}>
-              {isRecording ? 'Stop recording' : 'Start recording'}
-            </button>
+            <>
+              <button style={{ color: isRecording ? 'red' : 'green' }} onClick={(): void => setIsRecording(!isRecording)}>
+                {isRecording ? 'Stop recording' : 'Start recording'}
+              </button>
+              {isRecording ? null : <button style={{ color: 'red' }} onClick={(): void => setDesiredConfig(chooseRandom(possibleConfigs))}>
+                Skip
+              </button>}
+            </>
           )}
         </>
         ) : (

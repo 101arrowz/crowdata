@@ -28,6 +28,7 @@ const infoPhrase =
 `Hello! We'll ask you to say one of two phrases with one of eight emotions. For example, "Kids are talking by the door" in a happy tone.
 After you upload your voice sample for one phrase-emotion pairing, you'll get the next one. You can stop whenever you'd like, but we'd appreciate if you did 4 or optimally 8.
 If you don't like a certain phrase or emotion, refresh the page to get a new one. To start, select one of the following:`
+const desiredRatio = 0.5;
 const conf = [...cartesian(...sourceConfigs.map(c => Object.keys(c[1]).map(e => +e)))];
 export default conf;
-export { sourceConfigs, infoPhrase };
+export { sourceConfigs, infoPhrase, desiredRatio };

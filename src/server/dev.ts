@@ -9,7 +9,8 @@ const app = express();
 app.use('/api', api);
 app.use(bundler.middleware());
 const PORT = +process.env.PORT || 1234;
-app.listen(PORT);
-bundler.on('pwaBuildEnd' as 'buildEnd', () => {
-  console.log(`Listening at http://localhost:${PORT}`);
+app.listen(PORT, () => {
+  bundler.on('pwaBuildEnd' as 'buildEnd', () => {
+    console.log(`Listening at http://localhost:${PORT}`);
+  });
 });
