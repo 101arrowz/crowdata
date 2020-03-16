@@ -13,7 +13,6 @@ const makeBody = (params: { [k: string]: Uploadable | Uploadable[] | { [k: strin
     else
       for (const key in val)
         body.append(k+'['+key+']', val[key]);
-    console.log(body);
   }
   return body;
 }

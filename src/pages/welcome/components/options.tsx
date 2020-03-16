@@ -37,7 +37,8 @@ const Options: React.FC<{ whileLoading?: React.ReactNode }> = ({ whileLoading = 
         for (let k in options)
           params.append(k, options[k][0]);
         setIsLoading(true);
-        const res = await api('/id?'+params, { method: 'POST' });
+        let res: { ok: false } | Response = { ok: false };
+        try { res = await api('/id?'+params, { method: 'POST' }); } catch(e) {}
         if (!res.ok) {
           setIsLoading(false);
           alert('Something went wrong when registering you as a new contributor. Please try again later.');

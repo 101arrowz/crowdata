@@ -45,6 +45,21 @@ const RecordMenu: React.FC<{ onUpload: (data: Blob) => unknown, prompt: React.Re
           </>
         ) : (
           whileLoading
+        ) : state instanceof Blob ? (
+          <>
+            <button
+              onClick={async () => {
+                setState('uploading');
+                await onUpload(state);
+                setState(null);
+              }}
+              style={{ color: 'green' }}
+            >
+              Upload
+            </button>
+            <AudioPlayer audio={state} whilePlaying='Stop playing'>Play Sample</AudioPlayer>
+            <button onClick={(): void => setState(null)} style={{ color: 'red' }}>Select Different File</button>
+          </>
         ) : (
           <Upload onFile={setState} uploadType='audio/*'>Upload Recording</Upload>
         )
