@@ -1,4 +1,5 @@
 import { useState } from 'react';
+
 const globalState: { [k: string]: unknown } = JSON.parse(
   localStorage.getItem('globalState') || '{}'
 );
@@ -27,12 +28,11 @@ const createGlobalStateHook = <T>(name: string, defaultValue: T): GlobalStateHoo
     ];
   };
 };
-const useSex = createGlobalStateHook<number>('sex', null);
+
 const useID = createGlobalStateHook<string>('id', null);
-const useCompleted = createGlobalStateHook<number[][]>('completed', []);
+const useCompleted = createGlobalStateHook<string[][]>('completed', []);
 export default {
-  sex: useSex,
   id: useID,
   completed: useCompleted
 };
-export { useSex, useID, useCompleted };
+export { useID, useCompleted };

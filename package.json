@@ -5,7 +5,7 @@
   "author": "Arjun Barrett",
   "license": "MIT",
   "scripts": {
-    "start": "ts-node src/server/dev",
+    "start": "tsnd -T --exit-child src/server/dev",
     "lint": "eslint --fix \"src/**/*.ts{,x}\"",
     "build": "yarn build/client && yarn build/server",
     "build/server": "parcel build src/server/index.ts -d server -t node --no-source-maps",
@@ -31,9 +31,7 @@
     "parcel-plugin-precache-manifest": "^3.0.1",
     "parcel-plugin-pwa-manifest": "^2.9.1",
     "prettier": "^1.19.1",
-    "react": "^16.12.0",
-    "react-dom": "^16.12.0",
-    "ts-node": "^8.6.2",
+    "ts-node-dev": "^1.0.0-pre.44",
     "typescript": "^3.7.5"
   },
   "dependencies": {
@@ -41,13 +39,11 @@
     "express": "^4.17.1",
     "multer": "^1.4.2",
     "nanoid": "^2.1.11",
-    "node-wav": "^0.0.2",
-    "preact": "^10.3.1",
-    "ts-ebml": "^2.0.2"
+    "preact": "^10.3.1"
   },
   "pwaManifest": {
     "name": "Crowdata",
-    "description": "Contribute to cutting-edge scientific research without spending a dime.",
+    "description": "Help researchers advance the cutting-edge",
     "iconGenerationOptions": {
       "baseIcon": "src/icon.svg",
       "sizes": [],

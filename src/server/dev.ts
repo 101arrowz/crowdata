@@ -2,9 +2,7 @@ import api from '.';
 import express from 'express';
 import { join } from 'path';
 import Bundler from 'parcel-bundler';
-const bundler = new Bundler(join(__dirname, '..', 'index.html'), {
-  watch: true
-});
+const bundler = new Bundler(join(__dirname, '..', 'index.html'));
 const app = express();
 app.use('/api', api);
 app.use(bundler.middleware());

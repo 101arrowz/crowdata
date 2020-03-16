@@ -2,47 +2,83 @@ const mimeType = [
   'audio/webm; codecs=opus',
   'audio/ogg; codecs=opus',
   'audio/ogg',
-  'audio/webm'
+  'audio/webm',
+  'audio/wav'
 ].find(MediaRecorder.isTypeSupported);
-const isSupported = !!mimeType;
-let data: Blob[];
-let mediaRecorder: MediaRecorder;
 
-async function start(): Promise<boolean> {
-  if (!isSupported) return false;
-  if (mediaRecorder) {
-    if (mediaRecorder.state === 'recording') return true;
-  } else {
+class AudioRecorder {
+  private data: Blob[];
+  private mediaRecorder: MediaRecorder;
+  state: 'inactive' | 'paused' | 'recording';
+  constructor() {
+    if (!mimeType)
+      throw new Error('audio recording not supported');
+    this.data = [];
+    this.state = 'inactive';
+  }
+
+  async prepare(): Promise<void> {
     const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-    mediaRecorder = new MediaRecorder(stream, {
+    this.mediaRecorder = new MediaRecorder(stream, {
       mimeType
     });
-    mediaRecorder.addEventListener('dataavailable', ev => {
-      data.push(ev.data);
+    this.mediaRecorder.addEventListener('dataavailable', ev => this.data.push(ev.data));
+  }
+
+  start(): boolean {
+    if (!this.mediaRecorder) throw new Error('audio recorder not prepared');
+    switch(this.state) {
+      case 'recording': return false;
+      case 'paused': {
+        this.mediaRecorder.resume();
+        this.state = 'recording';
+        return true;
+      }
+      default: {
+        this.data = [];
+        this.mediaRecorder.start(1);
+        this.state = 'recording';
+        return true;
+      }
+    }
+  }
+
+  pause(): boolean {
+    if (!this.mediaRecorder) throw new Error('audio recorder not prepared');
+    if (this.state !== 'recording') return false;
+    this.mediaRecorder.pause();
+    this.state = 'paused';
+    return true;
+  }
+
+  resume(): boolean {
+    if (!this.mediaRecorder) throw new Error('audio recorder not prepared');
+    if (this.state !== 'paused') return false;
+    this.mediaRecorder.resume();
+    this.state = 'recording';
+    return true;
+  }
+
+  stop(): Blob | null {
+    if (!this.mediaRecorder) throw new Error('audio recorder not prepared');
+    if (this.state === 'inactive') return null;
+    this.mediaRecorder.stop();
+    this.state = 'inactive';
+    return new Blob(this.data, {
+      type: mimeType
     });
   }
-  data = [];
-  mediaRecorder.start();
-  return true;
 }
 
-async function stop(): Promise<Blob | null> {
-  if (!mediaRecorder || mediaRecorder.state !== 'recording') return null;
-  return new Promise(resolve => {
-    mediaRecorder.addEventListener('stop', () => {
-      resolve(
-        new Blob(data, {
-          type: mimeType
-        })
-      );
-    });
-    mediaRecorder.stop();
-  });
+const recorder = async (): Promise<AudioRecorder> => {
+  try {
+    const audioRecorder = new AudioRecorder();
+    await audioRecorder.prepare();
+    return audioRecorder;
+  } catch(e) {
+    return null;
+  }
 }
 
-export default {
-  start,
-  stop,
-  isSupported
-};
-export { start, stop, isSupported };
+export default recorder;
+export { AudioRecorder, mimeType };
