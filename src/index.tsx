@@ -1,7 +1,6 @@
-import MediaRecorderPolyfill = require('audio-recorder-polyfill');
-
-if (!window.MediaRecorder)
-  window.MediaRecorder = MediaRecorderPolyfill;
+const polyfill = document.createElement('script');
+polyfill.src = '/api/polyfill.js';
+document.head.appendChild(polyfill);
 
 import React from 'react';
 import { render } from 'react-dom';

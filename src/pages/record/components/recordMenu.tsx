@@ -1,9 +1,7 @@
-import React, { useState, useEffect, useRef } from 'react';
-import createRecorder, { AudioRecorder, mimeType } from '../../../util/recordAudio';
+import React, { useState, useEffect } from 'react';
+import createRecorder, { AudioRecorder, supported as recordSupported } from '../../../util/recordAudio';
 import AudioPlayer from './audioPlayer';
 import Upload from '../../../components/upload';
-
-const recordSupported = !!mimeType;
 
 const RecordMenu: React.FC<{ onUpload: (data: Blob) => unknown, prompt: React.ReactNode, whileLoading?: React.ReactNode, whileUploading?: React.ReactNode }> = ({ onUpload, prompt, whileLoading = null, whileUploading = whileLoading }) => {
   const [state, setState] = useState<Blob | 'recording' | 'uploading' | null>(null);
@@ -12,7 +10,6 @@ const RecordMenu: React.FC<{ onUpload: (data: Blob) => unknown, prompt: React.Re
     if (recordSupported)
       createRecorder().then(setRecorder);
   }, []);
-
   return (
     <>
       {prompt}
@@ -41,7 +38,7 @@ const RecordMenu: React.FC<{ onUpload: (data: Blob) => unknown, prompt: React.Re
           </>
         ) : (
           <>
-            <button onClick={() => setState(recorder.stop())}>Stop Recording</button>
+            <button onClick={() => recorder.stop().then(setState)}>Stop Recording</button>
           </>
         ) : (
           whileLoading

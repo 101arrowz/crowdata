@@ -1,5 +1,6 @@
 import express from 'express';
-import { mkdirSync, existsSync } from 'fs';
+import { mkdirSync } from 'fs';
+import { getPolyfillString } from 'polyfill-library';
 import { join } from 'path';
 import nanoid from 'nanoid';
 import { idOptions } from '../util/config';
@@ -15,6 +16,16 @@ app.post('/id', (req, res) => {
   mkdirSync(join(__dirname, 'data', idStr), { recursive: true });
   res.send(idStr);
 });
+
+app.get('/polyfill.js', (req, res) => {
+  getPolyfillString({
+    uaString: req.headers['user-agent'],
+    features: {
+      'es6': { flags: ['gated'] }
+    },
+    stream: true
+  }).pipe(res);
+})
 
 app.use('/submit', submitHandler);
 

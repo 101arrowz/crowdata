@@ -1,3 +1,5 @@
+import './polyfills/mediaRecorder';
+
 const mimeType = [
   'audio/webm; codecs=opus',
   'audio/ogg; codecs=opus',
@@ -5,6 +7,8 @@ const mimeType = [
   'audio/webm',
   'audio/wav'
 ].find(MediaRecorder.isTypeSupported);
+
+const supported = mimeType && !(MediaRecorder as unknown as { notSupported: boolean }).notSupported;
 
 class AudioRecorder {
   private data: Blob[];
@@ -36,7 +40,7 @@ class AudioRecorder {
       }
       default: {
         this.data = [];
-        this.mediaRecorder.start(1);
+        this.mediaRecorder.start();
         this.state = 'recording';
         return true;
       }
@@ -59,13 +63,17 @@ class AudioRecorder {
     return true;
   }
 
-  stop(): Blob | null {
+  async stop(): Promise<Blob | null> {
     if (!this.mediaRecorder) throw new Error('audio recorder not prepared');
     if (this.state === 'inactive') return null;
-    this.mediaRecorder.stop();
-    this.state = 'inactive';
-    return new Blob(this.data, {
-      type: mimeType
+    return new Promise(res => {
+      const cb = () => {
+        this.state = 'inactive';
+        res(new Blob(this.data, { type: mimeType }));
+        this.mediaRecorder.removeEventListener('stop', cb);
+      }
+      this.mediaRecorder.addEventListener('stop', cb);
+      this.mediaRecorder.stop();
     });
   }
 }
@@ -81,4 +89,4 @@ const recorder = async (): Promise<AudioRecorder> => {
 }
 
 export default recorder;
-export { AudioRecorder, mimeType };
+export { AudioRecorder, supported };
