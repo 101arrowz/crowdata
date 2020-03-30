@@ -1,19 +1,41 @@
 import express from 'express';
-import { mkdirSync } from 'fs';
+import { mkdirSync, readFileSync, writeFileSync } from 'fs';
 import { getPolyfillString } from 'polyfill-library';
 import { join } from 'path';
 import nanoid from 'nanoid';
-import { idOptions } from '../util/config';
+import { idOptions } from '../config';
 import submitHandler from './submit';
 
 const app = express();
+let consent: [string, string][];
+
+try {
+  mkdirSync(join(__dirname, 'data', 'submissions'), { recursive: true });
+} catch (e) {}
+try {
+  consent = JSON.parse(readFileSync(join(__dirname, 'data', 'consent.json')).toString());
+} catch (e) {
+  consent = [];
+}
+
+setInterval(
+  () => writeFileSync(join(__dirname, 'data', 'consent.json'), JSON.stringify(consent)),
+  60000
+);
 
 app.post('/id', (req, res) => {
-  if (!idOptions.every(([key, poss]) => key in req.query && req.query[key] in poss))
+  const name = req.query.name;
+  delete req.query.name;
+  if (!name || !idOptions.every(([key, poss]) => key in req.query && req.query[key] in poss))
     return res.status(400).end();
-  const idData = Object.entries(req.query).sort(([a], [b]) => idOptions.findIndex(([k]) => a === k) - idOptions.findIndex(([k]) => b === k)).map(([,v]) => v) as string[];
-  let idStr = join(...idData, nanoid(12));    
-  mkdirSync(join(__dirname, 'data', idStr), { recursive: true });
+  const idData = Object.entries(req.query)
+    .sort(
+      ([a], [b]) => idOptions.findIndex(([k]) => a === k) - idOptions.findIndex(([k]) => b === k)
+    )
+    .map(([, v]) => v) as string[];
+  const idStr = idData.concat(nanoid(12)).join('/');
+  mkdirSync(join(__dirname, 'data', 'submissions', idStr), { recursive: true });
+  consent.push([req.ip, name]);
   res.send(idStr);
 });
 
@@ -21,11 +43,11 @@ app.get('/polyfill.js', (req, res) => {
   getPolyfillString({
     uaString: req.headers['user-agent'],
     features: {
-      'es6': { flags: ['gated'] }
+      es6: { flags: ['gated'] }
     },
     stream: true
   }).pipe(res);
-})
+});
 
 app.use('/submit', submitHandler);
 

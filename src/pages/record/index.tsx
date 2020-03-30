@@ -1,24 +1,73 @@
-import React from 'react';
-import { useID } from '../../util/globalState';
-import RecordMenu from './components/recordMenu';
-import upload from '../../util/upload';
+import React, { useState, useEffect } from 'react';
+import { DataPage } from '../../util/types';
+import createRecorder, {
+  AudioRecorder,
+  supported as recordSupported
+} from '../../util/recordAudio';
+import AudioPlayer from './components/audioPlayer';
+import Upload from '../../components/upload';
 
-
-
-const Record: React.FC<{ desiredConfig: string[], onComplete: () => unknown, prompt: React.ReactNode }> = ({ desiredConfig, onComplete, prompt }) => {
-  const [id] = useID();
+const Record: DataPage = ({ onComplete }) => {
+  const [state, setState] = useState<Blob>(null);
+  const [recorder, setRecorder] = useState<AudioRecorder>(null);
+  useEffect(() => {
+    if (recordSupported) createRecorder().then(setRecorder);
+  }, []);
   return (
-    <RecordMenu
-      prompt={prompt}
-      whileLoading='Loading...'
-      onUpload={async file => {
-        const ok = await upload('audio', file, desiredConfig, id);
-        if (ok)
-          onComplete();
-        else
-          alert('Something went wrong when uploading. Please try again.');
-      }}
-    />
+    <>
+      {recordSupported ? (
+        recorder ? (
+          state === null ? (
+            <>
+              <button onClick={() => recorder.stop().then(setState)} style={{ color: 'red' }}>
+                Stop Recording
+              </button>
+            </>
+          ) : (
+            <>
+              <button
+                onClick={async () => {
+                  onComplete(state);
+                }}
+                style={{ color: 'green' }}
+              >
+                Upload
+              </button>
+              <AudioPlayer audio={state} whilePlaying="Stop playing">
+                Play Recorded Sample
+              </AudioPlayer>
+              <button onClick={(): void => setState(null)} style={{ color: 'red' }}>
+                Re-Record
+              </button>
+            </>
+          )
+        ) : (
+          'Loading...'
+        )
+      ) : state === null ? (
+        <Upload onFile={setState} uploadType="audio/*">
+          Upload Recording
+        </Upload>
+      ) : (
+        <>
+          <button
+            onClick={async () => {
+              onComplete(state);
+            }}
+            style={{ color: 'green' }}
+          >
+            Upload
+          </button>
+          <AudioPlayer audio={state} whilePlaying="Stop playing">
+            Play Sample
+          </AudioPlayer>
+          <button onClick={(): void => setState(null)} style={{ color: 'red' }}>
+            Select Different File
+          </button>
+        </>
+      )}
+    </>
   );
 };
+Record.type = 'audio';
 export default Record;

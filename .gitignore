@@ -3,4 +3,5 @@ dist/
 .cache/
 server/
 !src/server
+src/server/data
 yarn-error.log

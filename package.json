@@ -8,8 +8,8 @@
     "start": "tsnd -T --exit-child src/server/dev",
     "lint": "eslint --fix \"src/**/*.ts{,x}\"",
     "build": "yarn build/client && yarn build/server",
-    "build/server": "parcel build src/server/index.ts -d server -t node --no-source-maps",
-    "build/client": "parcel build src/index.html --experimental-scope-hoisting --no-source-maps --public-url ./"
+    "build/server": "NODE_ENV=production parcel build src/server/index.ts -d server -t node --no-source-maps",
+    "build/client": "NODE_ENV=production parcel build src/index.html --experimental-scope-hoisting --no-source-maps --public-url ./"
   },
   "devDependencies": {
     "@types/dom-mediacapture-record": "^1.0.3",
@@ -26,15 +26,22 @@
     "eslint": "^6.8.0",
     "eslint-config-prettier": "^6.10.0",
     "eslint-plugin-prettier": "^3.1.2",
+    "eslint-plugin-react": "^7.19.0",
     "fluent-ffmpeg": "^2.1.2",
     "parcel-bundler": "^1.12.4",
     "parcel-plugin-precache-manifest": "^3.0.1",
-    "parcel-plugin-pwa-manifest": "^2.9.1",
     "prettier": "^1.19.1",
     "ts-node-dev": "^1.0.0-pre.44",
     "typescript": "^3.7.5"
   },
   "dependencies": {
+    "@rmwc/button": "^6.0.3",
+    "@rmwc/dialog": "^6.0.3",
+    "@rmwc/linear-progress": "^6.0.3",
+    "@rmwc/select": "^6.0.3",
+    "@rmwc/textfield": "^6.0.3",
+    "@rmwc/theme": "^6.0.3",
+    "@rmwc/typography": "^6.0.3",
     "audio-recorder-polyfill": "^0.2.0",
     "express": "^4.17.1",
     "idb": "^5.0.1",
@@ -50,6 +57,10 @@
       "baseIcon": "src/icon.svg",
       "sizes": [],
       "genFavicons": true
+    },
+    "disabled": true,
+    "production": {
+      "disabled": false
     }
   },
   "precacheManifest": {

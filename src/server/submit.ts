@@ -3,7 +3,7 @@ import multer from 'multer';
 import ffmpeg from 'fluent-ffmpeg';
 import { existsSync, mkdirSync } from 'fs';
 import { join } from 'path';
-import { sourceConfigs } from '../util/config';
+import { instructions, idOptions } from '../config';
 import { Readable, ReadableOptions } from 'stream';
 
 class BufferStream extends Readable {
@@ -28,15 +28,24 @@ const validate = (extension?: string) => {
     const info = req.body.info;
     let inc = 0;
     let dir: string;
-    if (!id || !info || !(info instanceof Array) || !info.every((e, i) => e in sourceConfigs[i][1]) || !existsSync((dir = join(__dirname, 'data', id)))) return res.status(400).end();
+    let idSplit: string[];
+    if (
+      !id ||
+      !info ||
+      !(info instanceof Array) ||
+      !info.every((e, i) => e in instructions[i][1]) ||
+      !existsSync((dir = join(__dirname, 'data', 'submissions', ...(idSplit = id.split('/'))))) ||
+      idOptions.length + 1 !== idSplit.length
+    )
+      return res.status(400).end();
     let filename: string;
     const filepath = join(dir, ...info);
     mkdirSync(join(filepath), { recursive: true });
     while (existsSync((filename = join(filepath, inc + extension)))) inc++;
     req.filename = filename;
     next();
-  }
-}
+  };
+};
 
 app.post('/audio', validate('wav'), (req, res) => {
   const buf = req.file.buffer;
@@ -52,6 +61,6 @@ app.post('/audio', validate('wav'), (req, res) => {
   });
   conv.run();
 });
-app.post('/text', validate())
+app.post('/text', validate());
 
 export default app;
