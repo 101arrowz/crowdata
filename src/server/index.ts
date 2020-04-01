@@ -1,10 +1,18 @@
 import express from 'express';
 import { mkdirSync, readFileSync, writeFileSync } from 'fs';
-import { getPolyfillString } from 'polyfill-library';
+import { getPolyfillString, FeatureOptions } from 'polyfill-library';
 import { join } from 'path';
 import nanoid from 'nanoid';
-import { idOptions } from '../config';
+import { idOptions, polyfills as extraPolyfills } from '../../config';
 import submitHandler from './submit';
+
+const polyfills = [
+  'fetch',
+  'URL'
+].concat(...extraPolyfills);
+const features: { [k: string]: FeatureOptions } = {};
+for (let polyfill of polyfills)
+  features[polyfill] = { flags: ['gated'] }
 
 const app = express();
 let consent: [string, string][];
@@ -42,9 +50,7 @@ app.post('/id', (req, res) => {
 app.get('/polyfill.js', (req, res) => {
   getPolyfillString({
     uaString: req.headers['user-agent'],
-    features: {
-      es6: { flags: ['gated'] }
-    },
+    features,
     stream: true
   }).pipe(res);
 });

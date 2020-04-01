@@ -10,23 +10,50 @@ const mimeType = [
   'audio/wav'
 ].find(MediaRecorder.isTypeSupported);
 
+type AmplitudeCallback = (amplitude: number) => unknown;
+
 const supported =
   mimeType && !((MediaRecorder as unknown) as { notSupported: boolean }).notSupported;
 
 class AudioRecorder {
   private data: Blob[];
   private mediaRecorder: MediaRecorder;
+  onAmplitudeUpdate: AmplitudeCallback;
   constructor() {
     if (!mimeType) throw new Error('audio recording not supported');
     this.data = [];
   }
 
   async prepare(): Promise<void> {
-    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    const gump = navigator.mediaDevices && navigator.mediaDevices.getUserMedia;
+    // TypeScript can be so annoying
+    const gum =
+      navigator.getUserMedia ||
+      (navigator as Navigator & { webkitGetUserMedia: Navigator['getUserMedia'] })
+        .webkitGetUserMedia ||
+      (navigator as Navigator & { mozGetUserMedia: Navigator['getUserMedia'] }).mozGetUserMedia ||
+      (navigator as Navigator & { msGetUserMedia: Navigator['getUserMedia'] }).msGetUserMedia;
+    const stream = await (gump
+      ? navigator.mediaDevices.getUserMedia({ audio: true })
+      : new Promise<MediaStream>((res, rej) => gum.call(navigator, { audio: true }, res, rej)));
     this.mediaRecorder = new MediaRecorder(stream, {
       mimeType
     });
     this.mediaRecorder.addEventListener('dataavailable', ev => this.data.push(ev.data));
+    const ctx = new AudioContext({ sampleRate: 48000 });
+    const processor = ctx.createScriptProcessor(256, 1, 1);
+    processor.addEventListener('audioprocess', ev => {
+      if (this.mediaRecorder.state !== 'recording' || !this.onAmplitudeUpdate)
+        return;
+      const dat = ev.inputBuffer.getChannelData(0);
+      let sumSquareAmp = 0;
+      for (let amp of dat)
+        sumSquareAmp += amp * amp;
+      const amp = Math.sqrt(sumSquareAmp / dat.length);
+      this.onAmplitudeUpdate(amp);
+    });
+    ctx.createMediaStreamSource(stream).connect(processor);
+    processor.connect(ctx.destination);
   }
 
   start(): boolean {
@@ -64,7 +91,7 @@ class AudioRecorder {
     if (!this.mediaRecorder) throw new Error('audio recorder not prepared');
     if (this.mediaRecorder.state === 'inactive') return null;
     return new Promise(res => {
-      const cb = () => {
+      const cb = (): void => {
         res(new Blob(this.data, { type: mimeType }));
         this.mediaRecorder.removeEventListener('stop', cb);
       };

@@ -1,11 +1,27 @@
-import { Options } from '../util/types';
+import { Options } from '../src/util/types';
 /**
  * This is the configuration file for Crowdata. You shouldn't need to touch the
  * code at all if you configure your Crowdata properly.
+ * 
+ * Make sure to see the page config on the
  *
  * Your IDE or the app builder will warn you if you configure something with an
  * incorrect type.
  */
+
+/**
+ * This is the array of extra polyfills to include (if necessary). Useful if
+ * you write a custom data page, and still mandatory if you use an existing
+ * data page (just import 'pagelocation/polyfills').
+ * 
+ * Keep in mind that only the polyfills supported by `polyfill-library` (same
+ * as polyfill.io) can be used here. If one isn't supported, add it directly
+ * in the data page file.
+ * 
+ * See below for example.
+ */
+import recordPolyfills from '../src/pages/record/polyfills';
+const polyfills: string[] = recordPolyfills;
 
 /**
  * These are the options for the generated ID that is associated with each
@@ -73,4 +89,4 @@ const instructions: Options = [
  */
 const suggestedRatio = 0.5;
 
-export { idOptions, instructions, suggestedRatio, info };
+export { idOptions, instructions, suggestedRatio, info, polyfills };

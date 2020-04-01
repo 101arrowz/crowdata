@@ -28,23 +28,35 @@ const Options: React.FC<{ onSubmit: (data: ProcessedOptions) => unknown }> = ({ 
           value={options[key][0]}
           onChange={({ currentTarget: { value } }) => options[key][1](value)}
           style={{ width: '100%' }}
-          rootProps={{ style: { width: '100%', marginTop: '3vh' } }}
+          rootProps={{
+            style: { width: '100%', maxWidth: '35vh', textAlign: 'left', marginBottom: '2vh' }
+          }}
         />
       ))}
-      <Typography use="body2" style={{ marginTop: '3vh' }}>
-        By writing your full name below, you agree to the usage of the data you upload for research
-        purposes.
-        {idOptions.length
-          ? ' You also agree that the data will be associated with your responses to the above fields.'
-          : ''}{' '}
-        (Your name will not be associated with any data you choose to upload.)
-      </Typography>
-      <TextField
-        placeholder="Name"
-        value={name}
-        onInput={({ currentTarget: { value } }) => setName(value)}
-        style={{ marginTop: '3vh' }}
-      />
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          width: '100%',
+          marginBottom: '2vh'
+        }}
+      >
+        <Typography use="body2" style={{ width: '100%' }}>
+          By writing your full name below, you agree to the usage of the data you upload for
+          research purposes.
+          {idOptions.length
+            ? ' You also agree that the data will be associated with your responses to the above fields.'
+            : ''}{' '}
+          (Your name will not be associated with any data you choose to upload.)
+        </Typography>
+        <TextField
+          placeholder="Name"
+          value={name}
+          onInput={({ currentTarget: { value } }) => setName(value)}
+          style={{ width: '100%', maxWidth: '45vh', marginTop: '1vh' }}
+        />
+      </div>
       <Button
         label="Start"
         disabled={!canSubmit}
@@ -55,7 +67,6 @@ const Options: React.FC<{ onSubmit: (data: ProcessedOptions) => unknown }> = ({ 
           finalOptions['name'] = name;
           onSubmit(finalOptions);
         }}
-        style={{ marginTop: '3vh' }}
       />
     </>
   );

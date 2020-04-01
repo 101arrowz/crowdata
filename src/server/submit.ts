@@ -3,14 +3,14 @@ import multer from 'multer';
 import ffmpeg from 'fluent-ffmpeg';
 import { existsSync, mkdirSync } from 'fs';
 import { join } from 'path';
-import { instructions, idOptions } from '../config';
+import { instructions, idOptions } from '../../config';
 import { Readable, ReadableOptions } from 'stream';
 
 class BufferStream extends Readable {
   constructor(private _o: Buffer, options?: ReadableOptions) {
     super(options);
   }
-  _read() {
+  _read(): void {
     this.push(this._o);
     this._o = null;
   }
@@ -21,9 +21,9 @@ const upload = multer();
 
 app.use(upload.single('data'));
 
-const validate = (extension?: string) => {
+const validate = (extension?: string): express.Handler => {
   extension = extension ? '.' + extension : '';
-  return (req: express.Request, res: express.Response, next: express.NextFunction): void => {
+  return (req, res, next) => {
     const id = req.body.id;
     const info = req.body.info;
     let inc = 0;

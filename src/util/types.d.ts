@@ -1,7 +1,7 @@
 import React from 'react';
 
 type DataPage = React.FC<{
-  onComplete: (data: Blob) => unknown;
+  onComplete: (data: Blob) => Promise<void>;
 }> & { type: string };
 
 type Options = [string, { [k: number]: string } | { [k: string]: string }][];

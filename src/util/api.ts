@@ -1,5 +1,5 @@
 const BASE = process.env.BASE_URL || '/api';
-const api = (url: string, options?: RequestInit) => fetch(BASE + url, options);
+const api = (url: string, options?: RequestInit): Promise<Response> => fetch(BASE + url, options);
 type Uploadable = string | Blob;
 const makeBody = (params: {
   [k: string]: Uploadable | Uploadable[] | { [k: string]: Uploadable };

@@ -10,6 +10,6 @@
     "lib": ["ES2016", "DOM", "DOM.Iterable"],
     "types": ["dom-mediacapture-record"]
   },
-  "include": ["src/**/*.ts", "src/**/*.tsx"],
+  "include": ["src/**/*.ts", "src/**/*.tsx", "config/*.ts"],
   "exclude": ["src/sw.ts"]
 }

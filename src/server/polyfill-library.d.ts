@@ -15,18 +15,18 @@ declare module 'polyfill-library' {
   /** A polyfill name */
   type Polyfill = PurePolyfill | PolyfillAlias;
 
-  /** Options for each feature */
-  interface FeatureOptions {
-    flags: Iterable<Flag>;
-  }
-
-  /** Outputs information from `getPolyfills`  */
-  interface OutputFeatures extends FeatureOptions {
-    flags: Set<Flag>;
-    aliasOf: Set<Polyfill>;
-  }
-
   namespace PolyfillLibrary {
+    /** Options for each feature */
+    interface FeatureOptions {
+      flags: Iterable<Flag>;
+    }
+
+    /** Outputs information from `getPolyfills`  */
+    interface OutputFeatures extends FeatureOptions {
+      flags: Set<Flag>;
+      aliasOf: Set<Polyfill>;
+    }
+    
     /** Description of a polyfill */
     interface PolyfillDescription {
       /** The aliases that use this polyfill */
