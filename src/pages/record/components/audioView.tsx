@@ -117,7 +117,7 @@ const AudioView: React.FC<{
             }
           }
         }}
-      />
+      />      
       {audio && (
         <div
           style={{
@@ -126,8 +126,7 @@ const AudioView: React.FC<{
             alignSelf: 'center',
             alignItems: 'center',
             justifyContent: 'space-between',
-            width: '70%',
-            marginTop: '2vh'
+            width: '70%'
           }}
         >
           {audio.currentTime && !audio.paused ? (
