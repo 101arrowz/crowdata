@@ -17,6 +17,7 @@ const features: { [k: string]: FeatureOptions } = {};
 for (const polyfill in polyfills) features[polyfill] = { flags: [polyfills[polyfill] ? 'always' : 'gated'] };
 
 const app = express();
+app.set('trust proxy', true);
 let consent: [string, string, Date][];
 
 try {
