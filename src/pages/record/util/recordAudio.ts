@@ -43,12 +43,10 @@ class AudioRecorder {
     const ctx = new AudioContext({ sampleRate: 48000 });
     const processor = ctx.createScriptProcessor(256, 1, 1);
     processor.addEventListener('audioprocess', ev => {
-      if (this.mediaRecorder.state !== 'recording' || !this.onAmplitudeUpdate)
-        return;
+      if (this.mediaRecorder.state !== 'recording' || !this.onAmplitudeUpdate) return;
       const dat = ev.inputBuffer.getChannelData(0);
       let sumSquareAmp = 0;
-      for (let amp of dat)
-        sumSquareAmp += amp * amp;
+      for (const amp of dat) sumSquareAmp += amp * amp;
       const amp = Math.sqrt(sumSquareAmp / dat.length);
       this.onAmplitudeUpdate(amp);
     });
@@ -101,13 +99,13 @@ class AudioRecorder {
   }
 }
 
-const recorder = async (): Promise<AudioRecorder> => {
+const recorder = async (): Promise<AudioRecorder | Error> => {
   try {
     const audioRecorder = new AudioRecorder();
     await audioRecorder.prepare();
     return audioRecorder;
   } catch (e) {
-    return null;
+    return e;
   }
 };
 

@@ -88,10 +88,8 @@ sw.addEventListener('fetch', ev => {
           if (postponable.test(ev.request.url)) {
             const db = await pending();
             db.add('pending', await requestToStorable(ev.request));
-            return new Response();
-          } else {
-            throw e;
           }
+          throw e;
         })
       : cache().then(cache => cache.match(ev.request).then(res => res || cacheRequest(ev.request)))
   );

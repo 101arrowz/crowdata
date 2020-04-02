@@ -2,7 +2,7 @@ import {
   idOptions,
   info as infoPhrase,
   instructions as sourceConfigs,
-  suggestedRatio as desiredRatio,
+  suggestedRatio as desiredRatio
 } from '../../config';
 import CollectionPage from '../../config/page';
 function* cartesian<T>(head?: T[], ...tail: T[][]): Generator<T[]> {

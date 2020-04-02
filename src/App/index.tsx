@@ -9,6 +9,8 @@ import '@rmwc/select/styles';
 import '@rmwc/typography/styles';
 import '@rmwc/theme/styles';
 import '@rmwc/linear-progress/styles';
+import '@rmwc/fab/styles';
+import '@rmwc/icon-button/styles';
 import 'normalize.css';
 import { useID } from '../util/globalState';
 import { dialogs } from '../util/dialogQueue';
@@ -21,7 +23,10 @@ const App: React.FC = () => {
     <RMWCProvider
       typography={{
         headline6: ({ style, ...props }) => (
-          <h6 style={{ fontSize: '2.2vh', lineHeight: 1.25, margin: 0, ...style }} {...props} />
+          <h6 style={{ fontSize: '3vh', lineHeight: 1.25, margin: 0, ...style }} {...props} />
+        ),
+        body1: ({ style, ...props }) => (
+          <span style={{ fontSize: '2.2vh', lineHeight: 1.2, ...style }} {...props} />
         ),
         body2: ({ style, ...props }) => (
           <span style={{ fontSize: '1.7vh', lineHeight: 1.1, ...style }} {...props} />
@@ -30,7 +35,11 @@ const App: React.FC = () => {
     >
       <ThemeProvider
         options={{
-          background: 'lightblue'
+          primary: '#ff5121',
+          secondary: '#e539ff',
+          error: '#b00020',        
+          background: '#24aee9',
+          textPrimaryOnDark: '#404040'
         }}
         style={{
           display: 'flex',
@@ -44,7 +53,7 @@ const App: React.FC = () => {
             flex: 1,
             alignItems: 'center',
             justifyContent: 'center',
-            padding: '10%'
+            padding: '10vmin'
           }}
           tag="div"
         >

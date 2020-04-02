@@ -1,13 +1,14 @@
 import React, { useRef, useState } from 'react';
+import { alert } from '../../util/dialogQueue';
 
 const process = (files: FileList, uploadType: string): File | void => {
   if (files.length === 0) return;
-  if (files.length > 1) return alert('Too many files! Please submit only one.');
+  if (files.length > 1) return void alert({ title: 'Too many files!', body: 'Please submit only one file at a time.' });
   const file = files[0];
   const isValid = uploadType.includes('.')
     ? new RegExp('(' + uploadType.replace(/,/g, '|') + ')$').test(file.name)
     : new RegExp(uploadType).test(file.type);
-  if (!isValid) return alert('Invalid file type!');
+  if (!isValid) return void alert({ title: 'Invalid file type!',  body: `Your file ${file.name} was not recognized as a valid file of type "${uploadType}".` });
   return file;
 };
 
@@ -52,7 +53,6 @@ const Upload: React.FC<{
           e.stopPropagation();
           setHover(false);
           const file = process(e.dataTransfer.files, uploadType);
-          console.log(file);
           if (file) onFile(file);
           if (onDrop) onDrop(e);
         }}

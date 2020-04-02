@@ -16,6 +16,7 @@ module.exports = {
   rules: {
     'react/prop-types': 'off',
     'react/display-name': 'off',
+    'react/no-children-prop': 'off',
     '@typescript-eslint/explicit-function-return-type': ['warn', {
       allowExpressions: true
     }]

@@ -6,16 +6,18 @@ import nanoid from 'nanoid';
 import { idOptions, polyfills as extraPolyfills } from '../../config';
 import submitHandler from './submit';
 
-const polyfills = [
-  'fetch',
-  'URL'
-].concat(...extraPolyfills);
+const polyfills: { [k: string]: boolean } = {
+  fetch: false,
+  URL: false,
+  es6: false,
+  'Object.entries': false,
+  ...extraPolyfills
+}
 const features: { [k: string]: FeatureOptions } = {};
-for (let polyfill of polyfills)
-  features[polyfill] = { flags: ['gated'] }
+for (const polyfill in polyfills) features[polyfill] = { flags: [polyfills[polyfill] ? 'always' : 'gated'] };
 
 const app = express();
-let consent: [string, string][];
+let consent: [string, string, Date][];
 
 try {
   mkdirSync(join(__dirname, 'data', 'submissions'), { recursive: true });
@@ -43,7 +45,7 @@ app.post('/id', (req, res) => {
     .map(([, v]) => v) as string[];
   const idStr = idData.concat(nanoid(12)).join('/');
   mkdirSync(join(__dirname, 'data', 'submissions', idStr), { recursive: true });
-  consent.push([req.ip, name]);
+  consent.push([req.ip, name, new Date()]);
   res.send(idStr);
 });
 

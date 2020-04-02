@@ -10,9 +10,12 @@ import { Options } from '../src/util/types';
  */
 
 /**
- * This is the array of extra polyfills to include (if necessary). Useful if
- * you write a custom data page, and still mandatory if you use an existing
- * data page (just import 'pagelocation/polyfills').
+ * This is extra polyfills to include. Useful if you write a custom data page,
+ * and still mandatory if you use an existing data page (just import 
+ * 'pagelocation/polyfills').
+ * 
+ * Each key should be a polyfill name, and values should be whether to include
+ * them mandatorily.
  * 
  * Keep in mind that only the polyfills supported by `polyfill-library` (same
  * as polyfill.io) can be used here. If one isn't supported, add it directly
@@ -21,7 +24,7 @@ import { Options } from '../src/util/types';
  * See below for example.
  */
 import recordPolyfills from '../src/pages/record/polyfills';
-const polyfills: string[] = recordPolyfills;
+const polyfills: { [k: string]: boolean } = recordPolyfills;
 
 /**
  * These are the options for the generated ID that is associated with each
@@ -54,8 +57,8 @@ const idOptions: Options = [
  * This is the information you will give to the participant before they begin
  * and should be a string. It will appear above the ID options.
  */
-const info = `Hello! We'll ask you to say one of two phrases with one of eight emotions. For example, "Kids are talking by the door" in a happy tone.
-After you upload your voice sample for one phrase-emotion pairing, you'll get the next one. You can stop whenever you'd like, but we'd appreciate if you did 4 or optimally 8.
+const info = `Hello! We'll ask you to say one of two phrases with one of eight emotions. For example, we might ask that you say "Kids are talking by the door" in a happy tone.
+After you upload your voice sample for one phrase-emotion pairing, you'll get the next one. You can stop whenever you'd like, but we'd appreciate if you did 4 or optimally 8 recordings.
 If you don't like a certain phrase or emotion, refresh the page to get a new one. To start, select one of the following:`;
 
 /**

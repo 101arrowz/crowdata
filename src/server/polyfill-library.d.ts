@@ -26,7 +26,7 @@ declare module 'polyfill-library' {
       flags: Set<Flag>;
       aliasOf: Set<Polyfill>;
     }
-    
+
     /** Description of a polyfill */
     interface PolyfillDescription {
       /** The aliases that use this polyfill */

@@ -9,7 +9,7 @@
     "lint": "eslint --fix \"src/**/*.ts{,x}\"",
     "build": "yarn build/client && yarn build/server",
     "build/server": "NODE_ENV=production parcel build src/server/index.ts -d server -t node --no-source-maps",
-    "build/client": "NODE_ENV=production parcel build src/index.html --experimental-scope-hoisting --no-source-maps --public-url ./"
+    "build/client": "NODE_ENV=production parcel build src/index.html --no-source-maps --public-url ./"
   },
   "devDependencies": {
     "@types/dom-mediacapture-record": "^1.0.3",
@@ -40,11 +40,13 @@
     "@rmwc/button": "^6.0.5",
     "@rmwc/dialog": "^6.0.5",
     "@rmwc/fab": "^6.0.5",
+    "@rmwc/icon-button": "^6.0.5",
     "@rmwc/linear-progress": "^6.0.5",
     "@rmwc/provider": "^6.0.5",
-    "@rmwc/select": "^6.0.5",
+    "@rmwc/select": "^6.0.7",
     "@rmwc/textfield": "^6.0.5",
-    "@rmwc/theme": "^6.0.5",
+    "@rmwc/theme": "^6.0.6",
+    "@rmwc/tooltip": "^6.0.5",
     "@rmwc/typography": "^6.0.5",
     "audio-recorder-polyfill": "^0.2.0",
     "express": "^4.17.1",

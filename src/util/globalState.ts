@@ -30,8 +30,5 @@ const createGlobalStateHook = <T>(name: string, defaultValue: T): GlobalStateHoo
 
 const useID = createGlobalStateHook<string>('id', null);
 const useCompleted = createGlobalStateHook<string[][]>('completed', []);
-export default {
-  id: useID,
-  completed: useCompleted
-};
-export { useID, useCompleted };
+const useRequestedAudioPermission = createGlobalStateHook<boolean>('audioPermission', false);
+export { useID, useCompleted, useRequestedAudioPermission };

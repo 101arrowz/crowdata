@@ -59,8 +59,8 @@ const Options: React.FC<{ onSubmit: (data: ProcessedOptions) => unknown }> = ({ 
       </div>
       <Button
         label="Start"
+        trailingIcon="arrow_forward"
         disabled={!canSubmit}
-        dense
         onClick={() => {
           const finalOptions: ProcessedOptions = {};
           for (const k in options) finalOptions[k] = options[k][0];

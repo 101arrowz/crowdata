@@ -1,3 +1,3 @@
-export default [
-  'AudioContext'
-];
+export default {
+  AudioContext: true
+};
