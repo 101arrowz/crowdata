@@ -29,7 +29,7 @@ const Options: React.FC<{ onSubmit: (data: ProcessedOptions) => unknown }> = ({ 
           onChange={({ currentTarget: { value } }) => options[key][1](value)}
           style={{ width: '100%' }}
           rootProps={{
-            style: { width: '100%', maxWidth: '35vh', textAlign: 'left', marginBottom: '2vh' }
+            style: { width: '100%', maxWidth: '35vh', textAlign: 'left', marginBottom: '2vh', display: 'block' }
           }}
         />
       ))}
@@ -54,7 +54,7 @@ const Options: React.FC<{ onSubmit: (data: ProcessedOptions) => unknown }> = ({ 
           placeholder="Name"
           value={name}
           onInput={({ currentTarget: { value } }) => setName(value)}
-          style={{ width: '100%', maxWidth: '45vh', marginTop: '1vh' }}
+          style={{ width: '100%', maxWidth: '45vh', marginTop: '1vh', display: 'block' }}
         />
       </div>
       <Button

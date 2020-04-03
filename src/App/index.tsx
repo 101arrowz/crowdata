@@ -1,5 +1,6 @@
 import React from 'react';
 import { ThemeProvider, Theme } from '@rmwc/theme';
+import { TextField } from '@rmwc/textfield'
 import { RMWCProvider } from '@rmwc/provider';
 import { DialogQueue } from '@rmwc/dialog';
 import '@rmwc/button/styles';
@@ -42,37 +43,26 @@ const App: React.FC = () => {
           textPrimaryOnDark: '#404040'
         }}
         style={{
-          display: 'flex',
-          flex: 1
+          display: 'block',
+          flex: 1,
+          padding: '10vmin'
         }}
+        theme={'background'}
       >
-        <Theme
-          use="background"
+        <div
           style={{
+            borderRadius: '3vw',
+            backgroundColor: 'white',
+            padding: '7vmin',
             display: 'flex',
-            flex: 1,
-            alignItems: 'center',
-            justifyContent: 'center',
-            padding: '10vmin'
+            width: 'calc(100% - 14vmin)',
+            height: 'calc(100% - 14vmin)',
+            textAlign: 'center',
+            overflow: 'hidden'
           }}
-          tag="div"
         >
-          <div
-            style={{
-              borderRadius: '3vw',
-              backgroundColor: 'white',
-              padding: '3vmin',
-              display: 'flex',
-              flex: 1,
-              textAlign: 'center',
-              height: '100%',
-              width: '100%',
-              overflow: 'hidden'
-            }}
-          >
-            {id ? <Data /> : <Welcome />}
-          </div>
-        </Theme>
+          {id ? <Data /> : <Welcome />}
+        </div>
         <DialogQueue dialogs={dialogs} />
       </ThemeProvider>
     </RMWCProvider>
