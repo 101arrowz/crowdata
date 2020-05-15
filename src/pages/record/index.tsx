@@ -59,12 +59,15 @@ const Record: DataPage = ({ onComplete }) => {
               recorder.start();
               setState(recording);
             }}
-            style={state === null ? { backgroundColor: 'darkgreen' } : { display: 'none' }}
+            style={state === null ? { backgroundColor: 'darkgreen', maxHeight: '10vh' } : { display: 'none' }}
           />
           <Fab
             label="Stop Recording"
-            onClick={() => recorder.stop().then(setState)}
-            style={state === recording ? { backgroundColor: 'var(--mdc-theme-error)' } : { display: 'none' }}
+            onClick={() => recorder.stop().then(aud => {
+              setState(aud);
+              setTimeout(() => setAmplitudeData([...amplitudeData]), 0)
+            })}
+            style={state === recording ? { backgroundColor: 'var(--mdc-theme-error)', maxHeight: '10vh' } : { display: 'none' }}
             theme={['onError']}
           />
         </>
@@ -77,7 +80,7 @@ const Record: DataPage = ({ onComplete }) => {
         }} uploadType="audio/*" style={state == null ? {  } : { display: 'none' }}>
           <Fab
             label="Upload Recording"
-            style={{ backgroundColor: 'darkgreen' }}
+            style={{ backgroundColor: 'darkgreen', maxHeight: '10vh' }}
           />
         </Upload>
       )}
@@ -90,7 +93,7 @@ const Record: DataPage = ({ onComplete }) => {
             setState(null);
             setAmplitudeData([]);
           }}
-          style={{ background: 'darkgreen', minWidth: '40%', margin: '0 auto', marginBottom: '2vh' }}
+          style={{ background: 'darkgreen', minWidth: '40%', margin: '0 auto', marginBottom: '2vh', maxHeight: '10vh' }}
         />
         <Fab
           icon="thumb_down"
@@ -99,7 +102,7 @@ const Record: DataPage = ({ onComplete }) => {
             setState(null);
             setAmplitudeData([]);
           }}
-          style={{ backgroundColor: 'var(--mdc-theme-error)', minWidth: '40%', margin: '0 auto', marginBottom: '2vh' }}
+          style={{ backgroundColor: 'var(--mdc-theme-error)', minWidth: '40%', margin: '0 auto', marginBottom: '2vh', maxHeight: '10vh' }}
         />
       </div>
     </>

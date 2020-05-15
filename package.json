@@ -31,7 +31,7 @@
     "fluent-ffmpeg": "^2.1.2",
     "parcel-bundler": "^1.12.4",
     "parcel-plugin-precache-manifest": "^3.0.1",
-    "parcel-plugin-pwa-manifest": "^2.9.2",
+    "parcel-plugin-pwa-manifest": "^3.0.6",
     "prettier": "^1.19.1",
     "ts-node-dev": "^1.0.0-pre.44",
     "typescript": "^3.7.5"
@@ -64,7 +64,6 @@
     "description": "Help researchers advance the cutting-edge",
     "iconGenerationOptions": {
       "baseIcon": "src/icon.svg",
-      "sizes": [],
       "genFavicons": true
     },
     "disabled": true,

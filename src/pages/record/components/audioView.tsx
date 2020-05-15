@@ -8,6 +8,7 @@ const AudioView: React.FC<{
   style?: React.CSSProperties
 }> = ({ ampList, secondsToDisplay, playback, style }) => {
   const canvas = useRef<HTMLCanvasElement>(null);
+  const heightCalculationDiv = useRef<HTMLDivElement>(null);
   const [audio, setAudio] = useState<HTMLAudioElement>(null);
   const [, update] = useState(0);
   const forceUpdate = (): void => update(Date.now());
@@ -21,14 +22,16 @@ const AudioView: React.FC<{
     if (buttons % 2) handleCanvasAction(clientX);
   };
   const updateDimensions = (): { height: number; width: number, strokeStyle: string } => {
-    canvas.current.removeAttribute('height');
-    canvas.current.removeAttribute('width');
-    const style = getComputedStyle(canvas.current);
+    canvas.current.style.display = 'none';
+    heightCalculationDiv.current.style.removeProperty('display');
+    const style = getComputedStyle(heightCalculationDiv.current);
     const { height: strHeight, width: strWidth } = style;
     const height = parseFloat(strHeight),
       width = parseFloat(strWidth);
     canvas.current.height = height;
     canvas.current.width = width;
+    heightCalculationDiv.current.style.display = 'none';
+    canvas.current.style.removeProperty('display');
     return { height, width, strokeStyle: style.getPropertyValue('--mdc-theme-text-primary-on-light') };
   };
   useEffect(() => {
@@ -74,7 +77,7 @@ const AudioView: React.FC<{
       ctx.stroke();
       if (!audio.paused) setTimeout(forceUpdate, 35);
     }
-  }, [Math.floor((Date.now() * 3) / 100)]);
+  }, [Math.floor((Date.now() * 3) / 100), audio]);
   useEffect(() => {
     window.addEventListener('resize', forceUpdate);
     return () => window.removeEventListener('resize', forceUpdate);
@@ -93,7 +96,7 @@ const AudioView: React.FC<{
       <canvas
         ref={canvas}
         tabIndex={0}
-        style={{ ...style, flex: 1, width: '100%', outline: 'none' }}
+        style={{ ...style, outline: 'none' }}
         onMouseDown={handleCanvasClick}
         onMouseMove={handleCanvasClick}
         onTouchStart={e => {
@@ -117,7 +120,8 @@ const AudioView: React.FC<{
             }
           }
         }}
-      />      
+      />
+      <div style={{ flex: 4 }} ref={heightCalculationDiv}></div>
       {audio && (
         <div
           style={{
@@ -137,7 +141,7 @@ const AudioView: React.FC<{
                 audio.pause();
                 forceUpdate();
               }}
-              style={{ fontSize: '2.5rem', width: 'unset', height: 'unset' }}
+              style={{ fontSize: '5vh', width: 'unset', height: 'unset', padding: '0.5vmax' }}
             />
           ) : (
             <IconButton
@@ -147,7 +151,7 @@ const AudioView: React.FC<{
                 audio.play();
                 forceUpdate();
               }}
-              style={{ fontSize: '2.5rem', width: 'unset', height: 'unset' }}
+              style={{ fontSize: '5vh', width: 'unset', height: 'unset', padding: '0.5vmax' }}
             />
           )}
           <IconButton
@@ -159,7 +163,7 @@ const AudioView: React.FC<{
               audio.currentTime = 0;
               forceUpdate();
             }}
-            style={{ fontSize: '2.5rem', width: 'unset', height: 'unset' }}
+            style={{ fontSize: '5vh', width: 'unset', height: 'unset', padding: '0.5vmax' }}
           />
         </div>
       )}
