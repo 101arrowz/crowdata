@@ -6,7 +6,10 @@ const globalState: { [k: string]: unknown } = JSON.parse(
 
 const persistGlobalState = (): void =>
   localStorage.setItem('globalState', JSON.stringify(globalState));
-window.addEventListener('beforeunload', persistGlobalState);
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'hidden')
+    persistGlobalState();
+})
 
 type GlobalSetState<T> = React.Dispatch<React.SetStateAction<T>>;
 type GlobalStateHook<T> = () => [T, GlobalSetState<T>];
