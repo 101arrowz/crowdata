@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Fab } from '@rmwc/fab';
 import { DataPage } from '../../util/types';
 import { alert } from '../../util/dialogQueue';
-import { useRequestedAudioPermission } from '../../util/globalState';
+import { useGlobal } from '../../util/globalState';
 import createRecorder, { AudioRecorder, supported as recordSupported } from './util/recordAudio';
 import getAmplitude from './util/getAmplitude';
 import AudioView from './components/audioView';
@@ -16,7 +16,7 @@ const Record: DataPage = ({ onComplete }) => {
   const [state, setState] = useState<Blob>(null);
   const [recorder, setRecorder] = useState<AudioRecorder>(null);
   const [amplitudeData, setAmplitudeData] = useState<number[]>([]);
-  const [requestedAudioPermission, setRequestedAudioPermission] = useRequestedAudioPermission();
+  const [requestedAudioPermission, setRequestedAudioPermission] = useGlobal('audioPermission');
   useEffect(() => {
     if (recordSupported) {
       createRecorder().then(rec => {

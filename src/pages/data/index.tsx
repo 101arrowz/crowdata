@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Typography } from '@rmwc/typography';
 import { Transition } from 'react-transition-group';
 import { LinearProgress } from '@rmwc/linear-progress';
-import { useID, useCompleted } from '../../util/globalState';
+import { useGlobal } from '../../util/globalState';
 import { alert } from '../../util/dialogQueue';
 import upload from '../../util/upload';
 import configs, { sourceConfigs, CollectionPage, desiredRatio } from '../../util/config';
@@ -11,8 +11,10 @@ const chooseRandom = <T,>(vals: T[]): T => vals[Math.floor(Math.random() * vals.
 const timeout = 300;
 
 const Data: React.FC = () => {
-  const [id] = useID();
-  const [completed, setCompleted] = useCompleted();
+  const {
+    id: [id],
+    completed: [completed, setCompleted]
+  } = useGlobal(['id', 'completed']);
   const possibleConfigs = configs.filter(conf =>
     completed.every(val => !val.every((v, i) => conf[i] === v))
   );

@@ -57,7 +57,8 @@
     "normalize.css": "^8.0.1",
     "polyfill-library": "^3.52.3",
     "preact": "^10.3.1",
-    "react-transition-group": "^4.3.0"
+    "react-transition-group": "^4.3.0",
+    "react-universal-state": "^1.0.2"
   },
   "pwaManifest": {
     "name": "Crowdata",

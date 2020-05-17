@@ -4,7 +4,7 @@ import { Typography } from '@rmwc/typography';
 import { LinearProgress } from '@rmwc/linear-progress';
 import { infoPhrase } from '../../util/config';
 import Options from './components/options';
-import { useID } from '../../util/globalState';
+import { useGlobal } from '../../util/globalState';
 import { alert } from '../../util/dialogQueue';
 import api from '../../util/api';
 
@@ -13,7 +13,7 @@ const timeout = 300;
 const Welcome: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [localID, setLocalID] = useState('');
-  const [, setID] = useID();
+  const [, setID] = useGlobal('id');
   return (
     <Transition
       in={!localID}

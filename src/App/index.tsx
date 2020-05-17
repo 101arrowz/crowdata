@@ -1,6 +1,5 @@
 import React from 'react';
-import { ThemeProvider, Theme } from '@rmwc/theme';
-import { TextField } from '@rmwc/textfield'
+import { ThemeProvider } from '@rmwc/theme';
 import { RMWCProvider } from '@rmwc/provider';
 import { DialogQueue } from '@rmwc/dialog';
 import '@rmwc/button/styles';
@@ -13,13 +12,13 @@ import '@rmwc/linear-progress/styles';
 import '@rmwc/fab/styles';
 import '@rmwc/icon-button/styles';
 import 'normalize.css';
-import { useID } from '../util/globalState';
+import { useGlobal } from '../util/globalState';
 import { dialogs } from '../util/dialogQueue';
 import Data from '../pages/data';
 import Welcome from '../pages/welcome';
 
-const App: React.FC = () => {
-  const [id] = useID();
+const App = () => {
+  const [id] = useGlobal.id();
   return (
     <RMWCProvider
       typography={{
