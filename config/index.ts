@@ -58,8 +58,14 @@ const idOptions: Options = [
  * and should be a string. It will appear above the ID options.
  */
 const info = `Hello! We'll ask you to say one of two phrases with one of eight emotions. For example, we might ask that you say "Kids are talking by the door" in a happy tone.
-After you upload your voice sample for one phrase-emotion pairing, you'll get the next one. You can stop whenever you'd like, but we'd appreciate if you did 4 or optimally 8 recordings.
-If you don't like a certain phrase or emotion, refresh the page to get a new one. To start, select one of the following:`;
+After you submit your voice recording for one phrase-emotion pairing, you'll get the next one. You can stop whenever you'd like, but we'd appreciate if you did 4 or optimally 8 recordings.
+If you don't like a certain phrase or emotion, refresh the page to get a new one. To start, please fill out this form:`;
+
+/**
+ * This is the request for consent that will appear above the name field in the
+ * initial form and should be a string.
+ */
+const consentRequest = `Data collected by this app will be used for research purposes only. Please write your name below if you would like to participate. Your name will not be associated with any voice recordings you submit.`;
 
 /**
  * These are the options for the instructions given to each particpant when
@@ -92,4 +98,4 @@ const instructions: Options = [
  */
 const suggestedRatio = 0.5;
 
-export { idOptions, instructions, suggestedRatio, info, polyfills };
+export { idOptions, instructions, suggestedRatio, info, consentRequest, polyfills };

@@ -2,7 +2,8 @@ import {
   idOptions,
   info as infoPhrase,
   instructions as sourceConfigs,
-  suggestedRatio as desiredRatio
+  suggestedRatio as desiredRatio,
+  consentRequest
 } from '../../config';
 import CollectionPage from '../../config/page';
 function* cartesian<T>(head?: T[], ...tail: T[][]): Generator<T[]> {
@@ -12,4 +13,4 @@ function* cartesian<T>(head?: T[], ...tail: T[][]): Generator<T[]> {
 const conf = [...cartesian(...sourceConfigs.map(c => Object.keys(c[1])))];
 
 export default conf;
-export { desiredRatio, sourceConfigs, infoPhrase, idOptions, CollectionPage };
+export { desiredRatio, sourceConfigs, infoPhrase, idOptions, consentRequest, CollectionPage };

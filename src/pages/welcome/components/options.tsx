@@ -3,7 +3,7 @@ import { Select } from '@rmwc/select';
 import { Button } from '@rmwc/button';
 import { TextField } from '@rmwc/textfield';
 import { Typography } from '@rmwc/typography';
-import { idOptions as idOptionsArr } from '../../../util/config';
+import { idOptions as idOptionsArr, consentRequest } from '../../../util/config';
 
 const idOptions: typeof idOptionsArr = idOptionsArr.map(([key, val]) => [key, { ...val }]); // Fix Select functionality - array to object
 
@@ -42,14 +42,11 @@ const Options: React.FC<{ onSubmit: (data: ProcessedOptions) => unknown }> = ({ 
           marginBottom: '2vh'
         }}
       >
-        <Typography use="body2" style={{ width: '100%' }}>
-          By writing your full name below, you agree to the usage of the data you upload for
-          research purposes.
-          {idOptions.length
-            ? ' You also agree that the data will be associated with your responses to the above fields.'
-            : ''}{' '}
-          (Your name will not be associated with any data you choose to upload.)
-        </Typography>
+          {consentRequest.split('\n').map((txt, i) => (
+            <Typography use="body2" key={i} style={{ marginBottom: '0.6vh', maxWidth: '80vh' }}>
+              {txt}
+            </Typography>
+          ))}
         <TextField
           placeholder="Name"
           value={name}

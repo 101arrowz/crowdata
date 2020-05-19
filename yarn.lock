@@ -6312,10 +6312,10 @@ react-transition-group@^4.3.0:
     loose-envify "^1.4.0"
     prop-types "^15.6.2"
 
-react-universal-state@^1.0.2:
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/react-universal-state/-/react-universal-state-1.0.2.tgz#94a5c40c055e599bee6dd00709cf66723f96d661"
-  integrity sha512-UIkfrHdtXCRJOjwWxL0JcaAx0pbWqwmYvDUQ2YWrvvjJedCU1lxWUclnTm/d7brUBWocvucrkDhefhO6GNLbuQ==
+react-universal-state@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/react-universal-state/-/react-universal-state-1.1.0.tgz#7cf5b8bd8849497fb2c6679166a9158d0ff3dbe1"
+  integrity sha512-EbuAAMSgjtGL+kUPfMUXwFfovqWw7+gwKy1DdjwJO0RkM8ykOKfkYsbGkbiitBF+v0t2AMTH7s0wpNZBWV4n8w==
 
 read-pkg-up@^1.0.1:
   version "1.0.1"

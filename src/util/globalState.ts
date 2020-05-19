@@ -1,6 +1,6 @@
-import { createGlobalStateHook, createLocalStorageBackend } from 'react-universal-state';
+import { createGlobalStateHook, LocalStorageBackend } from 'react-universal-state';
 
-const backend = createLocalStorageBackend<{
+const backend = new LocalStorageBackend<{
   id: string,
   completed: string[][],
   audioPermission: boolean
